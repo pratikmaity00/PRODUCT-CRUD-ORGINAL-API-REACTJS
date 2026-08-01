@@ -38,23 +38,45 @@ export const schema: yup.ObjectSchema<SignUpAuth> = yup.object({
     .string()
     .required("Confirm Password is required.")
     .oneOf([yup.ref("password")], "Passwords do not match."),
+  // profile_pic: yup
+  //   .mixed<FileList>()
+  //   .test("required", "Profile picture is required.", (value) => {
+  //     return value instanceof FileList && value.length > 0;
+  //   })
+  //   .test("fileType", "Only PNG and JPG images are allowed.", (value) => {
+  //     if (!value || value.length === 0) return true;
+
+  //     const file = value[0];
+
+  //     return /^image\/(png|jpe?g)$/.test(file.type);
+  //   })
+  //   .test("fileSize", "File size must be less than 2 MB.", (value) => {
+  //     if (!value || value.length === 0) return true;
+
+  //     return value[0].size <= 2 * 1024 * 1024;
+  //   }),
+
   profile_pic: yup
-    .mixed<FileList>()
-    .test("required", "Profile picture is required.", (value) => {
-      return value instanceof FileList && value.length > 0;
-    })
-    .test("fileType", "Only PNG and JPG images are allowed.", (value) => {
-      if (!value || value.length === 0) return true;
+  .mixed<FileList>()
+  .required("Profile picture is required.")
+  .test(
+    "fileType",
+    "Only PNG and JPG images are allowed.",
+    (value) => {
+      if (!value || value.length === 0) return false;
 
-      const file = value[0];
-
-      return /^image\/(png|jpe?g)$/.test(file.type);
-    })
-    .test("fileSize", "File size must be less than 2 MB.", (value) => {
-      if (!value || value.length === 0) return true;
+      return /^image\/(png|jpe?g)$/.test(value[0].type);
+    },
+  )
+  .test(
+    "fileSize",
+    "File size must be less than 2 MB.",
+    (value) => {
+      if (!value || value.length === 0) return false;
 
       return value[0].size <= 2 * 1024 * 1024;
-    }),
+    },
+  ),
 
   // profile_pic: yup
   // .mixed<FileList>()
