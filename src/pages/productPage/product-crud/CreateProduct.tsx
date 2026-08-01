@@ -26,7 +26,7 @@ const CreateProduct = () => {
     dispatch(createProduct(form_data))
     .unwrap()
     .then((res) => {
-        if (res.status === 200) {
+        if (res.status === "200") {
           toast.success(res.message);
           setTimeout(() => {
             navigate("/products");
